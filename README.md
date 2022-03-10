@@ -10,8 +10,8 @@ Maintains a list of tasks.
 
 ## external resources
 
-[](https://github.com/divrhino/studybuddy)
+https://github.com/divrhino/studybuddy
 
-[](https://github.com/gophercises/task)
+https://github.com/gophercises/task
 
-[](https://github.com/vlbeaudoin/studybuddy)
+https://github.com/vlbeaudoin/studybuddy
