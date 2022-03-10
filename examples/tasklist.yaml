@@ -1,0 +1,3 @@
+db:
+  path: "/etc/tasklist/tasklist.db"
+  type: "sqlite"
