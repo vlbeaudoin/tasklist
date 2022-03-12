@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/spf13/viper"
@@ -23,7 +22,7 @@ func OpenDatabase() error {
 
 	switch t := viper.GetString("db.type"); t {
 	case "sqlite":
-		fmt.Println("Using driver gorm.io/driver/sqlite")
+		log.Println("Using driver gorm.io/driver/sqlite")
 
 		db_path := viper.GetString("db.path")
 
