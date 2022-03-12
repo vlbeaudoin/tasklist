@@ -32,7 +32,11 @@ var addCmd = &cobra.Command{
 	Short: "Creates a new task.",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) > 0 {
-			data.OpenDatabase()
+			err := data.OpenDatabase()
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			data.MigrateDatabase()
 			createNewTaskFromArgs(args)
 		} else {
