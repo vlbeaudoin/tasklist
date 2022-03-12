@@ -16,22 +16,6 @@ type Task struct {
 	Label string `json:"label"`
 }
 
-func OpenDatabaseWithSqlite() error {
-	var err error
-
-	db, err = gorm.Open(sqlite.Open(viper.GetString("db.path")), &gorm.Config{})
-	if err != nil {
-		return err
-	}
-
-	sqlDB, err := db.DB()
-	if err != nil {
-		return err
-	}
-
-	return sqlDB.Ping()
-}
-
 func OpenDatabase() error {
 	var err error
 
