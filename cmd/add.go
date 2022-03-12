@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"strings"
 
@@ -12,7 +11,7 @@ import (
 
 func createNewTaskFromArgs(args []string) {
 	label := strings.Join(args, " ")
-	fmt.Printf("Inserting task [%s]!\n", label)
+	log.Printf("Inserting task [%s]!\n", label)
 	data.InsertTask(label)
 }
 
