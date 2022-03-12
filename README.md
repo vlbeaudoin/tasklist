@@ -22,7 +22,7 @@ Currently, only the `sqlite` type is available, but any type supported by `gorm`
 
 ### db.path
 
-Any path accessible in READ/WRITE by the user running the binary is valid. Points to a directory where the database will reside (sqlite only).
+Any path accessible in READ/WRITE by the user running the binary is valid. Points to a location where the database file will reside (sqlite only).
 
 ### general.list_after_add
 
