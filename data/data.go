@@ -32,7 +32,7 @@ func OpenDatabase() error {
 
 		log.Println("Using database file:", db_path)
 
-		dialector = sqlite.Open(viper.GetString("db.path"))
+		dialector = sqlite.Open(db_path)
 	default:
 		log.Fatalf("Unrecognized database driver requested (%s).\n", t)
 	}
