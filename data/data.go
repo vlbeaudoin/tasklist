@@ -40,6 +40,15 @@ func OpenDatabase() error {
 	switch t := viper.GetString("db.type"); t {
 	case "sqlite":
 		fmt.Println("Using driver gorm.io/driver/sqlite")
+
+		db_path := viper.GetString("db.path")
+
+		if db_path == "" {
+			log.Fatal("No valid path found in `--db-path` or `db.path` (config file)")
+		}
+
+		log.Println("Database file:", db_path)
+
 		dialector = sqlite.Open(viper.GetString("db.path"))
 	default:
 		log.Fatalf("Unrecognized database driver requested (%s).\n", t)
