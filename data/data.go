@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/spf13/viper"
@@ -16,22 +15,6 @@ type Task struct {
 	Label string `json:"label"`
 }
 
-func OpenDatabaseWithSqlite() error {
-	var err error
-
-	db, err = gorm.Open(sqlite.Open(viper.GetString("db.path")), &gorm.Config{})
-	if err != nil {
-		return err
-	}
-
-	sqlDB, err := db.DB()
-	if err != nil {
-		return err
-	}
-
-	return sqlDB.Ping()
-}
-
 func OpenDatabase() error {
 	var err error
 
@@ -39,17 +22,17 @@ func OpenDatabase() error {
 
 	switch t := viper.GetString("db.type"); t {
 	case "sqlite":
-		fmt.Println("Using driver gorm.io/driver/sqlite")
+		log.Println("Using driver gorm.io/driver/sqlite")
 
 		db_path := viper.GetString("db.path")
 
 		if db_path == "" {
-			log.Fatal("No valid path found in `--db-path` or `db.path` (config file)")
+			log.Fatal("No valid database file found in `--db-path` or `db.path`.")
 		}
 
-		log.Println("Database file:", db_path)
+		log.Println("Using database file:", db_path)
 
-		dialector = sqlite.Open(viper.GetString("db.path"))
+		dialector = sqlite.Open(db_path)
 	default:
 		log.Fatalf("Unrecognized database driver requested (%s).\n", t)
 	}
