@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -35,8 +36,9 @@ var addCmd = &cobra.Command{
 			data.MigrateDatabase()
 			createNewTaskFromArgs(args)
 		} else {
-			fmt.Println("Not enough arguments after `add`.")
+			log.Fatal("Not enough arguments after `add`.")
 		}
+
 		if viper.GetBool("general.list_after_add") {
 			ListTasks()
 		}
