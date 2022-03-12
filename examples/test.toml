@@ -1,6 +1,0 @@
-[db]
-type = "sqlite"
-path = "/home/vlbeaudoin/git/golabs/tasklist/tasklist.db"
-
-[general]
-list_after_add = true
