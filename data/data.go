@@ -27,10 +27,10 @@ func OpenDatabase() error {
 		db_path := viper.GetString("db.path")
 
 		if db_path == "" {
-			log.Fatal("No valid path found in `--db-path` or `db.path` (config file)")
+			log.Fatal("No valid database file found in `--db-path` or `db.path`.")
 		}
 
-		log.Println("Database file:", db_path)
+		log.Println("Using database file:", db_path)
 
 		dialector = sqlite.Open(viper.GetString("db.path"))
 	default:
