@@ -61,3 +61,17 @@ func OpenDatabase() error {
 func MigrateDatabase() {
 	db.AutoMigrate(&Task{})
 }
+
+func InsertTask(label string) {
+	db.Create(&Task{
+		Label: label,
+	})
+}
+
+func ListTasks() ([]Task, error) {
+	var tasks []Task
+
+	result := db.Model(&Task{}).Find(&tasks)
+
+	return tasks, result.Error
+}
