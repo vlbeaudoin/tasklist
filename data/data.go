@@ -1,6 +1,7 @@
 package data
 
 import (
+	"errors"
 	"log"
 
 	"github.com/spf13/viper"
@@ -12,7 +13,7 @@ var db *gorm.DB
 
 type Task struct {
 	gorm.Model
-	Label string `json:"label"`
+	Label string `csv:"label" json:"label"`
 }
 
 func OpenDatabase() error {
@@ -66,4 +67,18 @@ func ListTasks() ([]Task, error) {
 	result := db.Model(&Task{}).Find(&tasks)
 
 	return tasks, result.Error
+}
+
+func InsertTasks(tasks []*Task) error {
+	if len(tasks) == 0 {
+		return errors.New("Cannot insert empty batch of tasks.")
+	}
+
+	for _, task := range tasks {
+		task.ID = 0
+	}
+
+	db.CreateInBatches(&tasks, 500)
+
+	return nil
 }
