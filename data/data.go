@@ -12,7 +12,7 @@ var db *gorm.DB
 
 type Task struct {
 	gorm.Model
-	Label string `json:"label"`
+	Label string `csv:"label" json:"label"`
 }
 
 func OpenDatabase() error {
