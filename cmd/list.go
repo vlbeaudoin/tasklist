@@ -27,7 +27,10 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lists all tasks.",
 	Run: func(cmd *cobra.Command, args []string) {
-		data.OpenDatabase()
+		err := data.OpenDatabase()
+		if err != nil {
+			log.Fatal(err)
+		}
 		data.MigrateDatabase()
 
 		ListTasks()
