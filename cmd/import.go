@@ -56,6 +56,8 @@ var importCmd = &cobra.Command{
 	Use:   "import",
 	Short: "Imports a list of tasks from a file.",
 	Run: func(cmd *cobra.Command, args []string) {
+		successfulImport := false
+
 		if l := len(args); l == 0 {
 			log.Fatal("Not enough arguments after `import`.")
 		} else {
@@ -115,6 +117,8 @@ var importCmd = &cobra.Command{
 						log.Println(err)
 					}
 
+					successfulImport = true
+
 				case "json":
 					log.Printf("Detected type '%s' in file '%s'.\n", "json", validPath)
 
@@ -127,9 +131,10 @@ var importCmd = &cobra.Command{
 				default:
 					log.Printf("Unknown type '%s' for file '%s', skipping.\n", f, validPath)
 				}
-				if viper.GetBool("general.list_after_import") {
-					ListTasks()
-				}
+			}
+
+			if successfulImport && viper.GetBool("general.list_after_import") {
+				ListTasks()
 			}
 		}
 	},
