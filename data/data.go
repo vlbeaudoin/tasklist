@@ -14,6 +14,14 @@ var db *gorm.DB
 type Task struct {
 	gorm.Model
 	Label string `csv:"label" json:"label"`
+	Steps []Step
+}
+
+type Step struct {
+	gorm.Model
+	Description string `csv:"description" json:"description"`
+	Completed   bool   `csv:"completed" json:"completed"`
+	TaskID      uint   `csv:"taskid" json:"taskid"`
 }
 
 func OpenDatabase() error {
@@ -52,13 +60,32 @@ func OpenDatabase() error {
 }
 
 func MigrateDatabase() {
-	db.AutoMigrate(&Task{})
+	db.AutoMigrate(&Task{}, &Step{})
 }
 
 func InsertTask(label string) {
 	db.Create(&Task{
 		Label: label,
 	})
+}
+
+func InsertTaskWithSteps(label string, steps []string) {
+	if len(steps) > 0 {
+		// Populate steps
+		structSteps := []Step{}
+
+		for _, step := range steps {
+			structSteps = append(structSteps, Step{Description: step})
+		}
+
+		// Insert task and steps
+		db.Create(&Task{
+			Label: label,
+			Steps: structSteps,
+		})
+	} else {
+		InsertTask(label)
+	}
 }
 
 func ListTasks() ([]Task, error) {
