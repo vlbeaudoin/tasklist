@@ -9,6 +9,8 @@ import (
 	"github.com/vlbeaudoin/tasklist/data"
 )
 
+var steps []string
+
 func createNewTaskFromArgs(args []string) {
 	label := strings.Join(args, " ")
 	log.Printf("Inserting task [%s]!\n", label)
@@ -23,6 +25,11 @@ func declareFlagsForAdd() {
 	viper.BindPFlag(
 		"general.list_after_add",
 		addCmd.Flags().Lookup("list-after-add"))
+
+	// steps
+	addCmd.Flags().StringSliceVarP(
+		&steps, "steps", "s", nil,
+		"Task steps")
 }
 
 // addCmd represents the add command
