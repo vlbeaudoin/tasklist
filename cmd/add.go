@@ -46,7 +46,21 @@ var addCmd = &cobra.Command{
 		if len(args) > 0 {
 			data.OpenDatabase()
 			data.MigrateDatabase()
-			createNewTaskFromArgs(args)
+
+			if len(steps) > 0 {
+				// Show steps before insertion
+				log.Println("Steps:")
+				for _, step := range steps {
+					log.Println("-", step)
+				}
+
+				// Insert task with steps
+				createNewTaskFromArgsAndSteps(args)
+			} else {
+				// Insert task without steps
+				createNewTaskFromArgs(args)
+			}
+
 		} else {
 			log.Fatal("Not enough arguments after `add`.")
 		}
