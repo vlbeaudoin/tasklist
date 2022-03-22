@@ -17,6 +17,12 @@ func createNewTaskFromArgs(args []string) {
 	data.InsertTask(label)
 }
 
+func createNewTaskFromArgsAndSteps(args []string) {
+	label := strings.Join(args, " ")
+	log.Printf("Inserting task [%s] with %d steps!\n", label, len(steps))
+	data.InsertTaskWithSteps(label, steps)
+}
+
 func declareFlagsForAdd() {
 	// general.list_after_add
 	addCmd.Flags().BoolP(
