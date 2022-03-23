@@ -109,3 +109,13 @@ func InsertTasks(tasks []*Task) error {
 
 	return nil
 }
+
+func FindTaskByID(taskID uint64) (task Task, err error) {
+	result := db.First(&task, taskID)
+	return task, result.Error
+}
+
+func FindStepsByTaskID(taskID uint64) (steps []Step, err error) {
+	result := db.Where("task_id = ?", taskID).Find(&steps)
+	return steps, result.Error
+}
