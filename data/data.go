@@ -61,8 +61,9 @@ func OpenDatabase() error {
 	return sqlDB.Ping()
 }
 
-func MigrateDatabase() {
-	db.AutoMigrate(&Task{}, &Step{})
+func MigrateDatabase() error {
+	err := db.AutoMigrate(&Task{}, &Step{})
+	return err
 }
 
 func InsertTask(label string) {
