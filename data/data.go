@@ -13,7 +13,17 @@ var db *gorm.DB
 
 type Task struct {
 	gorm.Model
+	ID    uint64 `mapper:"id" json:"id"`
 	Label string `csv:"label" json:"label"`
+	Steps []Step
+}
+
+type Step struct {
+	gorm.Model
+	ID          uint64 `mapper:"id" json:"id"`
+	Description string `csv:"description" json:"description"`
+	Completed   bool   `csv:"completed" json:"completed"`
+	TaskID      uint   `csv:"taskid" json:"taskid"`
 }
 
 func OpenDatabase() error {
@@ -51,14 +61,34 @@ func OpenDatabase() error {
 	return sqlDB.Ping()
 }
 
-func MigrateDatabase() {
-	db.AutoMigrate(&Task{})
+func MigrateDatabase() error {
+	err := db.AutoMigrate(&Task{}, &Step{})
+	return err
 }
 
 func InsertTask(label string) {
 	db.Create(&Task{
 		Label: label,
 	})
+}
+
+func InsertTaskWithSteps(label string, steps []string) {
+	if len(steps) > 0 {
+		// Populate steps
+		structSteps := []Step{}
+
+		for _, step := range steps {
+			structSteps = append(structSteps, Step{Description: step})
+		}
+
+		// Insert task and steps
+		db.Create(&Task{
+			Label: label,
+			Steps: structSteps,
+		})
+	} else {
+		InsertTask(label)
+	}
 }
 
 func ListTasks() ([]Task, error) {
@@ -81,4 +111,14 @@ func InsertTasks(tasks []*Task) error {
 	db.CreateInBatches(&tasks, 500)
 
 	return nil
+}
+
+func FindTaskByID(taskID uint64) (task Task, err error) {
+	result := db.First(&task, taskID)
+	return task, result.Error
+}
+
+func FindStepsByTaskID(taskID uint64) (steps []Step, err error) {
+	result := db.Where("task_id = ?", taskID).Find(&steps)
+	return steps, result.Error
 }

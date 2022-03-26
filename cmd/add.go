@@ -9,10 +9,18 @@ import (
 	"github.com/vlbeaudoin/tasklist/data"
 )
 
+var steps []string
+
 func createNewTaskFromArgs(args []string) {
 	label := strings.Join(args, " ")
 	log.Printf("Inserting task [%s]!\n", label)
 	data.InsertTask(label)
+}
+
+func createNewTaskFromArgsAndSteps(args []string) {
+	label := strings.Join(args, " ")
+	log.Printf("Inserting task [%s] with %d steps!\n", label, len(steps))
+	data.InsertTaskWithSteps(label, steps)
 }
 
 func declareFlagsForAdd() {
@@ -23,6 +31,11 @@ func declareFlagsForAdd() {
 	viper.BindPFlag(
 		"general.list_after_add",
 		addCmd.Flags().Lookup("list-after-add"))
+
+	// steps
+	addCmd.Flags().StringSliceVarP(
+		&steps, "steps", "s", nil,
+		"Task steps")
 }
 
 // addCmd represents the add command
@@ -33,7 +46,21 @@ var addCmd = &cobra.Command{
 		if len(args) > 0 {
 			data.OpenDatabase()
 			data.MigrateDatabase()
-			createNewTaskFromArgs(args)
+
+			if len(steps) > 0 {
+				// Show steps before insertion
+				log.Println("Steps:")
+				for _, step := range steps {
+					log.Println("-", step)
+				}
+
+				// Insert task with steps
+				createNewTaskFromArgsAndSteps(args)
+			} else {
+				// Insert task without steps
+				createNewTaskFromArgs(args)
+			}
+
 		} else {
 			log.Fatal("Not enough arguments after `add`.")
 		}
