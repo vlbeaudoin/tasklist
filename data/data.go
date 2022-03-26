@@ -13,12 +13,14 @@ var db *gorm.DB
 
 type Task struct {
 	gorm.Model
+	ID    uint64 `mapper:"id" json:"id"`
 	Label string `csv:"label" json:"label"`
 	Steps []Step
 }
 
 type Step struct {
 	gorm.Model
+	ID          uint64 `mapper:"id" json:"id"`
 	Description string `csv:"description" json:"description"`
 	Completed   bool   `csv:"completed" json:"completed"`
 	TaskID      uint   `csv:"taskid" json:"taskid"`
